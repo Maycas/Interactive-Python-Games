@@ -14,7 +14,7 @@ combo = 0
 max_score = 0
 max_combo = 0
 lives = 3
-time = 0
+time = 0.5
 started = False
 explosion_group = set()
 
@@ -306,15 +306,15 @@ def draw(canvas):
     global time, lives, rock_group, score, started, explosion_group, combo, max_combo, max_score
     
     # animate background
-    time += 1
+    time += 1.0
     center = debris_info.get_center()
     size = debris_info.get_size()
-    wtime = (time / 8) % center[0]
+    wtime = (time / 8.0) % center[0]
     canvas.draw_image(nebula_image, nebula_info.get_center(), nebula_info.get_size(), [WIDTH / 2, HEIGHT / 2], [WIDTH, HEIGHT])
     canvas.draw_image(debris_image, [center[0] - wtime, center[1]], [size[0] - 2 * wtime, size[1]], 
-                                [WIDTH / 2 + 1.25 * wtime, HEIGHT / 2], [WIDTH - 2.5 * wtime, HEIGHT])
-    canvas.draw_image(debris_image, [size[0] - wtime, center[1]], [2 * wtime, size[1]], 
-                                [1.25 * wtime, HEIGHT / 2], [2.5 * wtime, HEIGHT])
+                                [WIDTH / 2.0 + 1.25 * wtime, HEIGHT / 2.0], [WIDTH - 2.5 * wtime, HEIGHT])
+    canvas.draw_image(debris_image, [size[0] - wtime, center[1]], [2.0 * wtime, size[1]], 
+                                [1.25 * wtime, HEIGHT / 2.0], [2.5 * wtime, HEIGHT])
     
     # draw ship and sprites
     my_ship.draw(canvas)
