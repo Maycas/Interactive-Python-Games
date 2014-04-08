@@ -21,6 +21,13 @@ def new_game():
     # show game status
     print "New game. Range is from", low, "to", high
     print "Number of remaining guesses is", remaining, "\n"
+
+# helper function to check if the guess is between ranges
+def check_guess(guess):
+    if guess >= low and guess < high:
+        return "Correct"
+    else:
+        return "Incorrect"
     
 # define event handlers for control panel
 def range100():
@@ -42,6 +49,12 @@ def range1000():
 def input_guess(guess):
     # main game logic goes here
     global number, remaining
+    
+    # check if the introduced guess is correct
+    if check_guess(int(guess)) == "Incorrect":
+        print guess, "is not in the valid range"
+        print "Please introduce a number between", low, "and", high, "\n"
+        return
     
     # decrease the number of remaining guesses
     remaining -= 1
