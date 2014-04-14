@@ -1,19 +1,16 @@
-# template for "Stopwatch: The Game"
+# "Stopwatch: The Game"
 
 # import libraries
 import simplegui
 
 # define global variables
-seconds = 0.1
-tenths = 0
-x = 0 #successful stops variable
-y = 0 #total stops variable
-timer_runs = False
+tenths = 0 # tenths of second
+x = 0 # successful stops
+y = 0 # total stops
+timer_runs = False # global boolean to keep track on the timer status
 
-# define helper function to convert seconds to miliseconds
-def sec_2_milisec(seconds):
-    miliseconds = int(seconds * 1000)
-    return miliseconds
+game_status = ["Right on!", "Shame on you!", "None"]
+status = None
 
 # define helper function format that converts time
 # in tenths of seconds into formatted string A:BC.D
@@ -26,34 +23,41 @@ def format(t):
     # if A surpasses the value 9 (minutes), the game won't stop
     # minutes will keep increasing until the player finishes or restarts
     return str(A) + ":" + str(B) + str(C) + "." + str(D)
-    
-# define event handlers for buttons; "Start", "Stop", "Reset"
-# start button handler
-def start():
-    global timer_runs
-    timer_runs = True
-    timer.start()
 
-# stop button handler
+# handler to give feedback to the player
+def print_message(canvas, status):
+    if status == game_status[0]:
+        canvas.draw_text(status, (90, 225), 30, "Green")
+    elif status == game_status[1]:
+        canvas.draw_text(status, (60, 225), 30, "Red")
+    else:
+        canvas.draw_text("", (100, 200), 20, "Green")        
+
+# define event handlers for buttons; "Start", "Stop", "Reset"
+# start handler
+def start():
+    global timer_runs, status
+    timer.start()
+    timer_runs = True
+    status = game_status[2]
+
+# stop handler
 def stop():
-    global x
-    global y
-    global tenths
-    global timer_runs
+    global tenths, timer_runs, x, y
+    global status
     timer.stop()
     if tenths != 0 and tenths % 10 == 0 and timer_runs == True:
         x += 1
         y += 1
+        status = game_status[0]
     elif timer_runs == True:
         y += 1
+        status = game_status[1]
     timer_runs = False
-
-# restart button handler
-def restart():
-    global tenths
-    global x
-    global y
-    global timer_runs
+        
+# reset handler
+def reset():
+    global tenths, x, y, timer_runs
     timer.stop()
     tenths = 0
     x = 0
@@ -63,27 +67,23 @@ def restart():
 # define event handler for timer with 0.1 sec interval
 def tick():
     global tenths
-    tenths +=1
-    
+    tenths += 1
+
 # define draw handler
-def draw_handler(canvas):
-    global tenths
-    global x
-    global y
-    canvas.draw_text(format(tenths), (100, 100), 48, "White")
-    canvas.draw_text(str(x) + "/" + str(y), (230, 40), 38, "Green")
+def draw(canvas):
+    canvas.draw_text(format(tenths), (80, 150), 48, "white")
+    canvas.draw_text(str(x) + "/" + str(y), (230, 40), 38, "Yellow")
+    print_message(canvas, status) 
     
-# create frame
-frame = simplegui.create_frame("StopWatch: The Game", 300, 150)
+# create frame and timer
+frame = simplegui.create_frame("StopWatch: The game", 300, 250)
+timer = simplegui.create_timer(100, tick)
 
 # register event handlers
-timer = simplegui.create_timer(sec_2_milisec(seconds), tick)
-frame.set_draw_handler(draw_handler)
+frame.set_draw_handler(draw)
 frame.add_button("Start", start, 150)
 frame.add_button("Stop", stop, 150)
-frame.add_button("Restart", restart, 150)
+frame.add_button("Reset", reset, 150)
 
 # start frame
 frame.start()
-
-# Please remember to review the grading rubric
