@@ -130,17 +130,13 @@ def keydown(key):
     if key == simplegui.KEY_MAP["W"]:
         paddle1_vel -= modulus
     elif key == simplegui.KEY_MAP["S"]:
-        paddle1_vel += modulus
-    else:
-        paddle1_vel = 0
-    
+        paddle1_vel = modulus
+      
     # player 2
     if key == simplegui.KEY_MAP["up"]:
         paddle2_vel -= modulus
     elif key == simplegui.KEY_MAP["down"]:
         paddle2_vel += modulus
-    else:
-        paddle2_vel = 0
    
 def keyup(key):
     global paddle1_vel, paddle2_vel
