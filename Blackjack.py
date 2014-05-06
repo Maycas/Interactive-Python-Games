@@ -218,6 +218,8 @@ def draw(canvas):
     dealer.draw(canvas, [100, 110])
     player.draw(canvas, [100, 410])
     
+    player.draw
+    
     # draw labels
     canvas.draw_text("BLACKJACK", (350, 50), 40, "Black", "sans-serif")
     canvas.draw_text(outcome, (75, 350), 28, "Yellow", "sans-serif")
